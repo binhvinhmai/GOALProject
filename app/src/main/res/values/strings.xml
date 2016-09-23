@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">GOALProject</string>
+    <string name="points_label">points</string>
+    <string name="get_points_button_label">get points!</string>
+    <string name="points_count">0</string>
+    <string name="getpointsprompt">Please enter the event code:</string>
+</resources>
