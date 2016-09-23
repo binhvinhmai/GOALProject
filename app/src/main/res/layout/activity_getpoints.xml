@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,4 +20,16 @@
         android:layout_below="@+id/getpointsprompttext"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="39dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberPassword"
+        android:ems="10"
+        android:layout_alignBottom="@+id/eventCodeTextField"
+        android:layout_alignLeft="@+id/eventCodeTextField"
+        android:layout_alignStart="@+id/eventCodeTextField"
+        android:layout_marginBottom="14dp"
+        android:id="@+id/editText"
+        android:background="@drawable/shapes"/>
 </RelativeLayout>

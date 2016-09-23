@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int monthly_points = 0;
 
     private void updatePoints() {
-        TextView t = (TextView)findViewById(R.id.points_label_count);
+        TextView t = (TextView)findViewById(R.id.points_count);
         t.setText(Integer.toString(total_points));
     }
 
@@ -49,6 +49,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch(v.getId()) {
             case R.id.points_button: {
                 // Open up new activity to get new points
+                Intent intent = new Intent(this, GetPointsActivity.class);
+                startActivity(intent);
+                break;
             }
         }
         updatePoints();
