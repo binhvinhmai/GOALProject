@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    static final private String TAG = "GOAL Project 1.0";
+    private static final String TAG = "GOAL Project 1.0";
     private static final String PREFS_NAME = "PrefsFile";
     private static final String TOTALPOINTS = "TotalPoints";
 
@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         updatePoints();
     }
 
-
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
@@ -56,5 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         updatePoints();
     }
+
+    //Once I get access to database of events, create event listview from database
 }
 

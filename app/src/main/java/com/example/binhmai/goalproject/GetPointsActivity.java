@@ -18,6 +18,8 @@ public class GetPointsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_getpoints);
+
+        //Will need to create a list of events for the program to cycle through and find.
     }
 
 
