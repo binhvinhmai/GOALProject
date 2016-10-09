@@ -73,16 +73,4 @@ public class GetPointsActivity extends AppCompatActivity {
             }
         });
     };
-
-    public void onClick(View v){
-        Log.d("TRIAL", "HELP");
-        switch(v.getId()) {
-            case R.id.gp_points_button: {
-                // Open up new activity to get new points
-                int eventCode = Integer.parseInt(eventEdit.getText().toString());
-                GetPointsActivity(eventCode);
-                break;
-            }
-        }
-    };
 }
