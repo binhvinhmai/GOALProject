@@ -24,6 +24,8 @@ public class Event {
 
 
     public Event(String n, String dateTime, int p, int c) throws ParseException {
+        //This function throws a ParseException as the function must take in a date, and parse it
+        //In order for this function to even load, a ParseException must be in place to safeguard bad input
         eventName = n;
         eventDate = eventDateFormat.parse(dateTime);
         eventPoints = p;
@@ -49,4 +51,9 @@ public class Event {
         return eventPoints;
     }
 
+    @Override
+    public String toString() {
+        //Allows this to be printed out via Array Element
+        return eventName;
+    }
 }

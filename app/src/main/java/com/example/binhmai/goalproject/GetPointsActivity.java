@@ -35,6 +35,8 @@ public class GetPointsActivity extends AppCompatActivity {
     private static final String TOTALPOINTS = "TotalPoints";
 
     public GetPointsActivity() throws ParseException {
+        //This activity throws a ParseException as the function must take in a date, and parse it
+        //In order for this function to even load, a ParseException must be in place to safeguard bad input
     }
 
     public void GetPointsActivity(int userCode){
