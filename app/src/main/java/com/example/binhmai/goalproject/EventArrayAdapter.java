@@ -30,24 +30,19 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         if (convertView == null) {
             //Do something here with activity_main instead
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.event_item, parent, false);
-            //viewHolder.itemView = (TextView) convertView.findViewById(R.id.eventItem);
-            //convertView.setTag(viewHolder);
-        }
-        else {
-            //viewHolder = (ViewHolder) convertView.getTag();
         }
         TextView eventTitle = (TextView) convertView.findViewById(R.id.eventTitle);
-        //TextView eventLocation = (TextView) convertView.findViewById(R.id.eventLocation);
         TextView eventDate = (TextView) convertView.findViewById(R.id.eventDate);
 
         eventTitle.setText(item.getEventName());
         eventDate.setText(item.getEventDate());
 
-        /*
-        if (item!=null) {
-            //The layout only has one ListView
-            viewHolder.itemView.setText(String.format(item.toString()));
-        }*/
+        //The following will check if the eventDate field is null or empty
+        //If it is, something has gone terribly wrong and the code will throw an Assertion
+        if (eventDate == null || eventDate.getText().equals("")) {
+            //Assert that the event date cannot be blank
+            assert item.getEventDate() != "" : "The date was sent in incorrectly - this should not be blank!";
+        }
 
         return convertView;
     }
