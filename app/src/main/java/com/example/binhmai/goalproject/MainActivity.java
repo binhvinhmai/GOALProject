@@ -85,9 +85,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         //Get List View
-        EventArrayAdapter eventArrayAdapter = new EventArrayAdapter(this,R.layout.activity_main, eventArrayList);
-        //ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_main, eventArrayList);
-        ListView listView = (ListView) findViewById(R.id.listView);
+        EventArrayAdapter eventArrayAdapter = new EventArrayAdapter(this, eventArrayList);
+        ListView listView = (ListView) findViewById(R.id.event_listView);
         listView.setAdapter(eventArrayAdapter);
 
         updatePoints();

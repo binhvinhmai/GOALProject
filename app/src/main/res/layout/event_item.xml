@@ -1,16 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="1">
     <!-- postitem.xml -->
+
     <TextView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/eventItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="2"
         android:textIsSelectable="false"
-        android:textSize="16sp" >
+        android:textSize="16sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="74dp"
+        android:layout_marginStart="74dp"
+        android:layout_marginTop="22dp">
     </TextView>
 
-</LinearLayout>
+    <TextView
+        android:text="event_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/eventDate"
+        android:layout_below="@+id/eventItem"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="33dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="19dp" />
+
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/eventTitle"
+        android:layout_weight="0.03"
+        android:text="event_title"
+        android:layout_alignTop="@+id/eventItem"
+        android:layout_alignLeft="@+id/eventDate"
+        android:layout_alignStart="@+id/eventDate" />
+
+</RelativeLayout>

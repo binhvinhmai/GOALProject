@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.StringTokenizer;
 
 /**
  * Created by binhmai on 9/18/16.
@@ -21,6 +22,7 @@ public class Event {
     private int maxVisits = 1;
     private SimpleDateFormat eventDateFormat = new SimpleDateFormat("EEE mm/dd/yyyy HH:MM", Locale.ENGLISH);
     private Date eventDate;
+    private String eventDateString;
 
 
     public Event(String n, String dateTime, int p, int c) throws ParseException {
@@ -28,6 +30,7 @@ public class Event {
         //In order for this function to even load, a ParseException must be in place to safeguard bad input
         eventName = n;
         eventDate = eventDateFormat.parse(dateTime);
+        eventDateString = eventDateFormat.format(eventDate);
         eventPoints = p;
         eventCode = c;
     }
@@ -42,6 +45,10 @@ public class Event {
             return 0;
         }
     }
+
+    public String getEventName() { return eventName; }
+
+    public String getEventDate() { return eventDateString; }
 
     public long getEventCode() {
         return eventCode;

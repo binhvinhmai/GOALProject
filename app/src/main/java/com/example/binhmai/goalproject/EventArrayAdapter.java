@@ -17,33 +17,37 @@ import java.util.ArrayList;
 
 public class EventArrayAdapter extends ArrayAdapter<Event> {
     //Custom ArrayAdapter class specifically to handle placing items into the Listview
-    private static class ViewHolder {
-        private TextView itemView;
-    }
 
-    public EventArrayAdapter(Context context, int textViewResourceID, ArrayList<Event> items) {
+    public EventArrayAdapter(Context context, ArrayList<Event> items) {
         //Constructor
-        super(context, textViewResourceID, items);
+        super(context, 0, items);
     }
     
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
-        if (convertView == null) {
-            convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.activity_main, parent, false);
-            viewHolder = new ViewHolder();
-            viewHolder.itemView = (TextView) convertView.findViewById(R.id.eventItem);
+        //Get the data item for this position
+        Event item = getItem(position);
 
-            convertView.setTag(viewHolder);
+        if (convertView == null) {
+            //Do something here with activity_main instead
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.event_item, parent, false);
+            //viewHolder.itemView = (TextView) convertView.findViewById(R.id.eventItem);
+            //convertView.setTag(viewHolder);
         }
         else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            //viewHolder = (ViewHolder) convertView.getTag();
         }
+        TextView eventTitle = (TextView) convertView.findViewById(R.id.eventTitle);
+        //TextView eventLocation = (TextView) convertView.findViewById(R.id.eventLocation);
+        TextView eventDate = (TextView) convertView.findViewById(R.id.eventDate);
 
-        Event item = getItem(position);
+        eventTitle.setText(item.getEventName());
+        eventDate.setText(item.getEventDate());
+
+        /*
         if (item!=null) {
             //The layout only has one ListView
             viewHolder.itemView.setText(String.format(item.toString()));
-        }
+        }*/
 
         return convertView;
     }
