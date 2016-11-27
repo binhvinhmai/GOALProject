@@ -42,7 +42,7 @@ public class GetPointsActivity extends AppCompatActivity {
     public void GetPointsActivity(int userCode){
         Log.d("TAG", "HERE");
         for (Event e_iter: eventArrayList) {
-            if (e_iter.getEventCode() == Long.valueOf(userCode)) {
+            if (e_iter.getEventCode() == String.valueOf(userCode)) {
                 MainActivity.total_points += e_iter.getEventPoints();
                 MainActivity.monthly_points += e_iter.getEventPoints();
                 Log.d("TOTAL", Integer.toString(total_points));

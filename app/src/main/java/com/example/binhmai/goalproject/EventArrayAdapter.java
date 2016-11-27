@@ -35,7 +35,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         TextView eventDate = (TextView) convertView.findViewById(R.id.eventDate);
 
         eventTitle.setText(item.getEventName());
-        eventDate.setText(item.getEventDate());
+        eventDate.setText(item.getEventDayandDate());
 
         //The following will check if the eventDate field is null or empty
         //If it is, something has gone terribly wrong and the code will throw an Assertion
