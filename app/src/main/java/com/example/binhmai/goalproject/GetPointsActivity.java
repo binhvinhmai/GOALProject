@@ -39,13 +39,11 @@ public class GetPointsActivity extends AppCompatActivity {
         //In order for this function to even load, a ParseException must be in place to safeguard bad input
     }
 
-    public void GetPointsActivity(int userCode){
-        Log.d("TAG", "HERE");
+    public void getPointsFromEvent(int userCode){
         for (Event e_iter: eventArrayList) {
             if (e_iter.getEventCode() == String.valueOf(userCode)) {
                 MainActivity.total_points += e_iter.getEventPoints();
                 MainActivity.monthly_points += e_iter.getEventPoints();
-                Log.d("TOTAL", Integer.toString(total_points));
 
                 //Save data into shared preferences
                 SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
@@ -70,8 +68,13 @@ public class GetPointsActivity extends AppCompatActivity {
         Button get_points = (Button)findViewById(R.id.gp_points_button);
         get_points.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int eventCode = Integer.parseInt(eventEdit.getText().toString());
-                GetPointsActivity(eventCode);
+                switch (v.getId()) {
+                    case R.id.gp_points_button: {
+                        int eventCode = Integer.parseInt(eventEdit.getText().toString());
+                        getPointsFromEvent(eventCode);
+                        break;
+                    }
+                }
             }
         });
     };

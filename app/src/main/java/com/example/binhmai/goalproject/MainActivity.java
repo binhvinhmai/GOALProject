@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -57,16 +58,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         t.setText(Integer.toString(total_points));
     }
 
-
-    public static void loadSampleArray() throws ParseException {
-        //This function throws a ParseException as the function must take in a date, and parse it
-        //In order for this function to even load, a ParseException must be in place to safeguard bad input
-        eventArrayList.clear();
-        eventArrayList.add(new Event("Spay and Neuter KC Pet Vaccination Clinic", "2016-10-04", 30));
-        eventArrayList.add(new Event("WaterFire", "2016-10-08", 50));
-        eventArrayList.add(new Event("Hoots and Howls", "2016-10-08", 40));
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,20 +73,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         total_points = settings.getInt(TOTALPOINTS,0); //Get int from shared prefs - if none found, 0
 
-        /*
-        try {
-            loadSampleArray();
-        } catch (ParseException e) {
-            //This must throw a ParseException because there is a good chance that the Event will be unable
-            //to parse the Date provided in the string - thus ensuring this doesn't break the program
-            e.printStackTrace();
-        }*/
-
         //Get List View
         ListView listView = (ListView) findViewById(R.id.event_listView);
         EventArrayAdapter eventArrayAdapter = new EventArrayAdapter(this, eventArrayList);
         listView.setAdapter(eventArrayAdapter);
 
+
+        //Add event handler to items on clic
+        listView.setOnItem
         updatePoints();
     }
 
@@ -114,6 +99,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             }
+            case R.id.addEventButton: {
+                //Create an intent to connect to Calendar
+                Intent calIntent = new Intent(Intent.ACTION_INSERT);
+                calIntent.setData(CalendarContract.Events.CONTENT_URI);
+                break;
+            }
         }
         updatePoints();
     }
@@ -125,11 +116,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private class WebParserLinks extends AsyncTask<Void, Void, Void> {
 
-        //As previously mentioned, this addition of a class within the MainActivity makes this design poor
-        //However, it was a necessary 'evil' as I was unable to have this class separate without it messing
-        //up code and crashing the program - and placing it within the MainActivity allows it to have direct
-        //access to the variables anyways.
-
         //It is inheriting from the AsyncTask because this will be a class that will load in data
         //After the main UI has loaded - if it tries to parse HTML while the UI is loading, it will crash
 
@@ -140,14 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         protected Void doInBackground(Void... params) {
-            Calendar c = Calendar.getInstance();
             String calendarURL = "";
-            Elements eventName = null;
-            String eventNameString = "";
-            Elements eventDate = null;
-            String eventDateString = "";
-            Date currentEventDate = null;
-            int count = 0;
             try {
                 doc = Jsoup.connect(url).timeout(10*1000).get(); //Code that may or may not break, depending if the phone has internet connection
 
@@ -156,44 +135,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 for (int i = 0; i < links.size(); i++) {
                     calendarURL = links.get(i).attr("abs:href");
                     if (calendarURL.startsWith("http://kcparks.org/event/")) {
-                        Log.d("URL", calendarURL);
                         //If it fits the above, it has an event name
                         //Connect to the database
                         //The below will throw an exception if the connection is broken
-                        currentlink = Jsoup.connect(calendarURL).timeout(10*1000).get();
-
-                        //Extract data from the current link
-                        //Extract the name of the event
-                        eventName = currentlink.select("h1");
-                        eventNameString = Jsoup.parse(String.valueOf(eventName.get(0))).text();
-                        eventDate = currentlink.select("time");
-                        eventDateString = eventDate.attr("datetime");
-
-                        //For now each new event will be worth 25 points for attending
-                        //Currently each event code will be determined by a basic number - eventually, I will come up with an algorithm to encrypt them
-                        try {
-                            //This may throw an error as this event, if incorrectly parsed or if there is a bad connection, may throw a ParseException
-                            //Checked ParseException
-                            eventArrayList.add(new Event(eventNameString, eventDateString, 25));
-                        } catch (ParseException e) {
-                            e.printStackTrace(); //Print the error if it's an issue
-                        }
-
-                        /*
-                        if (count == 10) {
-                            break;
-                        }
-                        else {
-                            count+=1;
-                        }*/
+                        eventArrayList.add(new Event(calendarURL, 25));
                     }
                 }
             } catch (IOException e) {
                 //Throws an IOException if the URL cannot be retrieved successfully
                 e.printStackTrace();
                 Log.d("UNABLE", "TO CONNECT");
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-
             return null;
         }
     }

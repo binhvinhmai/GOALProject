@@ -25,7 +25,8 @@ public class EventTest extends TestCase {
     //Checks to see if all of the events had properly loaded.
 
     public MainActivity mMainActivity = new MainActivity();
-    Event testEvent = new Event("Hoots and Howls", "2016-10-08", 40);
+
+    Event testEvent = new Event("http://kcparks.org/event/big-12-womens-soccer-championship-2016/", 40);
 
     public EventTest() throws IOException, ParseException {
         //This must throw an IO Exception as MainActivity may also throw an Exception.

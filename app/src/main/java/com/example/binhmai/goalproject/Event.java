@@ -1,9 +1,16 @@
 package com.example.binhmai.goalproject;
 
+import android.content.Intent;
+import android.provider.CalendarContract;
 import android.util.Log;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.junit.runner.RunWith;
 
+import java.io.IOException;
+import java.net.ProxySelector;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,8 +30,8 @@ public class Event {
     private String eventDateString;
     SimpleDateFormat eventDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
-
-    public Event(String n, String dateTime, int p) throws ParseException {
+    /*
+    public Event(String n, String dateTime, int p, ) throws ParseException {
         //This function throws a ParseException as the function must take in a date, and parse it
         //In order for this function to even load, a ParseException must be in place to safeguard bad input
 
@@ -36,9 +43,33 @@ public class Event {
         eventName = n;
         eventDate = eventDateFormat.parse(dateTime);
         eventDateString = eventDateFormat.format(eventDate);
-        eventPoints = p;
         eventDayofWeek = eventDayFormat.format(eventDate);
+        eventPoints = p;
         createEventCode();
+    }*/
+
+
+    public Event(String calendarURL, int p) throws ParseException, IOException {
+        //This function throws a ParseException as the function must take in a date, and parse it
+        //In order for this function to even load, a ParseException must be in place to safeguard bad input
+
+        Document currentlink = Jsoup.connect(calendarURL).timeout(10 * 1000).get();
+
+        //Extract data from the current link
+        //Extract the name of the event
+        Elements eventNameLink = currentlink.select("h1");
+        Elements eventDateLink = currentlink.select("time");
+
+        //Date formats for the events
+        SimpleDateFormat eventDayFormat = new SimpleDateFormat("EEE", Locale.ENGLISH);
+
+        eventName= Jsoup.parse(String.valueOf(eventNameLink.get(0))).text();
+        eventDate = eventDateFormat.parse(eventDateLink.attr("datetime"));
+        eventDateString = eventDateFormat.format(eventDate);
+        eventDayofWeek = eventDayFormat.format(eventDate);
+        eventPoints = p;
+        createEventCode();
+        Log.d("DAY", eventDayofWeek);
     }
 
     //To prevent users from abusing event codes, provide that they only get to visit once
@@ -70,10 +101,7 @@ public class Event {
         //Take the event month and day
         //Mix it with the first two letters of the event
         //Change the first two letters to their respective numbers eventCode
-
-
         eventCode = eventDateString.substring(5,7) + string_to_number(eventName.charAt(0)) + string_to_number(eventName.charAt(1)) + eventDateString.substring(8);
-        Log.d("EVENT CODE", eventCode);
     }
 
     @Override
@@ -134,5 +162,11 @@ public class Event {
 
         return number;
 
+    }
+
+    public void addToCalenadr() {
+        Intent calIntent = new Intent(Intent.ACTION_INSERT);
+        calIntent.setType("vnd.android.cursor.item/event");
+        calIntent.putExtra(CalendarContract.Events.TITLE, getEventName());
     }
 }
