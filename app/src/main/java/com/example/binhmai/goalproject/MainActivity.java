@@ -63,11 +63,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         Log.i(TAG, "Starting onCreate Function");
         setContentView(R.layout.activity_main);
+
+        //Get data for events
         new WebParserLinks().execute();
 
         //Add points to button
         View AddPoints = findViewById(R.id.points_button);
         AddPoints.setOnClickListener(this);
+
 
         //Get shared preferences file
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
@@ -78,9 +81,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         EventArrayAdapter eventArrayAdapter = new EventArrayAdapter(this, eventArrayList);
         listView.setAdapter(eventArrayAdapter);
 
-
-        //Add event handler to items on clic
-        listView.setOnItem
         updatePoints();
     }
 
@@ -99,15 +99,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             }
-            case R.id.addEventButton: {
-                //Create an intent to connect to Calendar
-                Intent calIntent = new Intent(Intent.ACTION_INSERT);
-                calIntent.setData(CalendarContract.Events.CONTENT_URI);
-                break;
-            }
         }
         updatePoints();
     }
+
 
     public static void addPoints(int points) {
         total_points += points;
@@ -118,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //It is inheriting from the AsyncTask because this will be a class that will load in data
         //After the main UI has loaded - if it tries to parse HTML while the UI is loading, it will crash
-
+        boolean newURL;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -129,16 +124,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String calendarURL = "";
             try {
                 doc = Jsoup.connect(url).timeout(10*1000).get(); //Code that may or may not break, depending if the phone has internet connection
-
                 links = doc.select("a[href]");
-                //I originally did links.size() but due to the large amount of links, it crashes the program.
                 for (int i = 0; i < links.size(); i++) {
                     calendarURL = links.get(i).attr("abs:href");
+                    newURL = true;
                     if (calendarURL.startsWith("http://kcparks.org/event/")) {
                         //If it fits the above, it has an event name
-                        //Connect to the database
-                        //The below will throw an exception if the connection is broken
-                        eventArrayList.add(new Event(calendarURL, 25));
+                        //Check to make sure it's not in the eventArrayList - ASyncTask will perform EVERY time the app is loaded
+
+                        for (Event e_iter: eventArrayList) {
+                            if (e_iter.returnURL() == calendarURL) { //There's a match
+                                newURL = false;
+                            }
+                        }
+                        if (newURL) {
+                            eventArrayList.add(new Event(calendarURL, 25));
+                        }
                     }
                 }
             } catch (IOException e) {

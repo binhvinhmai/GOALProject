@@ -1,5 +1,6 @@
 package com.example.binhmai.goalproject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.provider.CalendarContract;
 import android.util.Log;
@@ -13,7 +14,9 @@ import java.io.IOException;
 import java.net.ProxySelector;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 /**
  * Created by binhmai on 9/18/16.
@@ -23,53 +26,44 @@ import java.util.Locale;
 public class Event {
     private String eventName;
     private String eventDayofWeek;
-    private int eventPoints;
+    private String tempDateString;
+    private String eventCalendarURL;
     private String eventCode;
-    private int maxVisits = 1;
-    private Date eventDate;
     private String eventDateString;
+    private int eventPoints;
+    private int maxVisits = 1;
+    private Date creationDate; //The creation date that's listed in the URL is actually when the event was created - not the actual date
+    private Date eventDate;
     SimpleDateFormat eventDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-
-    /*
-    public Event(String n, String dateTime, int p, ) throws ParseException {
-        //This function throws a ParseException as the function must take in a date, and parse it
-        //In order for this function to even load, a ParseException must be in place to safeguard bad input
-
-        //Date formats for the events
-
-        SimpleDateFormat eventDayFormat = new SimpleDateFormat("EEE", Locale.ENGLISH);
-
-        //Set variables
-        eventName = n;
-        eventDate = eventDateFormat.parse(dateTime);
-        eventDateString = eventDateFormat.format(eventDate);
-        eventDayofWeek = eventDayFormat.format(eventDate);
-        eventPoints = p;
-        createEventCode();
-    }*/
 
 
     public Event(String calendarURL, int p) throws ParseException, IOException {
         //This function throws a ParseException as the function must take in a date, and parse it
         //In order for this function to even load, a ParseException must be in place to safeguard bad input
 
-        Document currentlink = Jsoup.connect(calendarURL).timeout(10 * 1000).get();
+        eventCalendarURL = calendarURL;
+        Document currentLink = Jsoup.connect(calendarURL).timeout(10 * 1000).get();
 
         //Extract data from the current link
-        //Extract the name of the event
-        Elements eventNameLink = currentlink.select("h1");
-        Elements eventDateLink = currentlink.select("time");
+        Elements eventNameLink = currentLink.select("h1");
+        Elements DateLink = currentLink.select("time");
 
         //Date formats for the events
         SimpleDateFormat eventDayFormat = new SimpleDateFormat("EEE", Locale.ENGLISH);
 
+        //Start getting the correct and necessary data from the link
         eventName= Jsoup.parse(String.valueOf(eventNameLink.get(0))).text();
-        eventDate = eventDateFormat.parse(eventDateLink.attr("datetime"));
+
+        //Use the data below to create a unique event code
+        creationDate = eventDateFormat.parse(DateLink.attr("datetime"));
+        tempDateString = eventDateFormat.format(creationDate);
+        createEventCode();
+
+        tempDateString = DateLink.html();
+        eventDate = eventDateFormat.parse(createDate(tempDateString));
         eventDateString = eventDateFormat.format(eventDate);
         eventDayofWeek = eventDayFormat.format(eventDate);
         eventPoints = p;
-        createEventCode();
-        Log.d("DAY", eventDayofWeek);
     }
 
     //To prevent users from abusing event codes, provide that they only get to visit once
@@ -89,20 +83,25 @@ public class Event {
 
     public String getEventDayandDate() { return eventDayofWeek + " " + eventDateString; }
 
-    public String getEventCode() {
-        return eventCode;
+    public int getEventCode() {
+        return Integer.parseInt(eventCode);
     }
 
     public int getEventPoints() {
         return eventPoints;
     }
 
+    public String returnURL() {
+        return eventCalendarURL;
+    }
+
     public void createEventCode() {
         //Take the event month and day
         //Mix it with the first two letters of the event
         //Change the first two letters to their respective numbers eventCode
-        eventCode = eventDateString.substring(5,7) + string_to_number(eventName.charAt(0)) + string_to_number(eventName.charAt(1)) + eventDateString.substring(8);
+        eventCode = tempDateString.substring(5,7) + string_to_number(eventName.charAt(0)) + string_to_number(eventName.charAt(1)) + tempDateString.substring(8);
     }
+
 
     @Override
     public String toString() {
@@ -164,9 +163,37 @@ public class Event {
 
     }
 
-    public void addToCalenadr() {
+    public void addToCalendar() {
+
+        //Needs to be updated as this is a mess
+
         Intent calIntent = new Intent(Intent.ACTION_INSERT);
         calIntent.setType("vnd.android.cursor.item/event");
         calIntent.putExtra(CalendarContract.Events.TITLE, getEventName());
+
+        //Parse the string from YYYY-mm-dd format and into the Gregorian Calendar
+        GregorianCalendar calDate = new GregorianCalendar(Integer.parseInt(tempDateString.substring(0,4)), Integer.parseInt(tempDateString.substring(5,7)), Integer.parseInt(tempDateString.substring(8)));
+
+        //KC Parks and Rec does not give the exact start and end times for their events - thus I will make it an al day event
+        calIntent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
+        calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, calDate.getTimeInMillis());
+        calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, calDate.getTimeInMillis());
+
+        //context.startActivity(calIntent);
     }
+
+    public String createDate(String longDateString) throws ParseException {
+        //Takes in a parameter that's like January 1
+        String[] dateArray = longDateString.trim().split(" ");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new SimpleDateFormat("MMM").parse(dateArray[0]));
+
+        String monthFormat = String.format("%02d", (cal.get(Calendar.MONTH) + 1));
+        String dayFormat = String.format("%02d",Integer.parseInt(dateArray[1]));
+        String yearFormat = String.valueOf(cal.getInstance().get(Calendar.YEAR));
+
+        return (yearFormat + "-" + monthFormat + "-" + dayFormat);
+    }
+
 }
+

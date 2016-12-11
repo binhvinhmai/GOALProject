@@ -1,8 +1,10 @@
 package com.example.binhmai.goalproject;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Context;
@@ -41,7 +43,7 @@ public class GetPointsActivity extends AppCompatActivity {
 
     public void getPointsFromEvent(int userCode){
         for (Event e_iter: eventArrayList) {
-            if (e_iter.getEventCode() == String.valueOf(userCode)) {
+            if (e_iter.getEventCode() == userCode) {
                 MainActivity.total_points += e_iter.getEventPoints();
                 MainActivity.monthly_points += e_iter.getEventPoints();
 
@@ -53,10 +55,24 @@ public class GetPointsActivity extends AppCompatActivity {
                 editor.commit();
 
                 //Reload main activity
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
+                reloadMain();
+                return;
             }
         }
+        //If none are found
+        AlertDialog.Builder noEventAlert = new AlertDialog.Builder(this);
+        noEventAlert.setMessage("The event code you entered doesn't match any existing ones");
+        noEventAlert.setMessage("No existing code matches");
+        noEventAlert.setPositiveButton(
+                "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        reloadMain();
+                        return;
+                    }
+                });
+        noEventAlert.create().show();
     }
 
     @Override
@@ -70,6 +86,9 @@ public class GetPointsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.gp_points_button: {
+                        if (eventEdit.getText().toString() == "") {
+                            break;
+                        }
                         int eventCode = Integer.parseInt(eventEdit.getText().toString());
                         getPointsFromEvent(eventCode);
                         break;
@@ -78,4 +97,10 @@ public class GetPointsActivity extends AppCompatActivity {
             }
         });
     };
+
+    public void reloadMain() {
+        //Reload main activity
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 }
