@@ -19,10 +19,21 @@
             android:name=".GetPointsActivity"
             android:label="@string/title_activity_getpoints">
         </activity>
+
+        <activity
+            android:name=".SubmitFeedbackActivity"
+            android:label="Submit Feedback">
+        </activity>
+
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_CALENDAR"/>
     <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL"/>
+
+    <meta-data
+        android:name="com.facebook.sdk.ApplicationId"
+        android:value="@string/app_name" /> //Create a string resource with your app id
 </manifest>

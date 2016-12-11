@@ -2,67 +2,107 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <SeekBar
+    <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:id="@+id/seekBar3"
-        android:layout_alignParentTop="true"
+        android:layout_height="50dp"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/miscFeedback"
+        android:background="@drawable/shapes"
+        android:layout_below="@+id/anythingElsePrompt"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_marginTop="18dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
-    <TextView
-        android:text="TextView"
+    <RatingBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/seekBar3"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="23dp"
-        android:layout_marginStart="23dp"
-        android:layout_marginTop="18dp"
-        android:id="@+id/organized_prompt" />
+        android:id="@+id/satisfiedRating"
+        android:layout_below="@+id/satisfaction_prompt"
+        android:layout_alignLeft="@+id/noFeedback"
+        android:layout_alignStart="@+id/noFeedback"
+        android:layout_marginLeft="11dp"
+        android:layout_marginStart="11dp" />
 
     <TextView
-        android:text="TextView"
+        android:text="@string/satisfaction_prompt_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="14dp"
         android:id="@+id/satisfaction_prompt"
         android:layout_alignParentTop="true"
         android:layout_alignLeft="@+id/organized_prompt"
         android:layout_alignStart="@+id/organized_prompt" />
 
-    <SeekBar
+    <TextView
+        android:text="@string/organized_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="19dp"
-        android:id="@+id/seekbar_organized"
+        android:id="@+id/organized_prompt"
+        android:layout_below="@+id/satisfiedRating"
+        android:layout_centerHorizontal="true" />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/organized_prompt"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignLeft="@+id/satisfiedRating"
+        android:layout_alignStart="@+id/satisfiedRating"
+        android:id="@+id/organizedRatingBar" />
 
     <TextView
-        android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/seekbar_organized"
-        android:layout_alignRight="@+id/organized_prompt"
-        android:layout_alignEnd="@+id/organized_prompt"
-        android:layout_marginTop="29dp"
-        android:id="@+id/textView3" />
+        android:id="@+id/customerService"
+        android:text="@string/customer_service_prompt"
+        android:layout_below="@+id/organizedRatingBar"
+        android:layout_alignLeft="@+id/organized_prompt"
+        android:layout_alignStart="@+id/organized_prompt" />
 
-    <SeekBar
+    <RatingBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/seekBar4"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:id="@+id/spaceRatingBar"
+        android:layout_below="@+id/customerService"
+        android:layout_alignLeft="@+id/organizedRatingBar"
+        android:layout_alignStart="@+id/organizedRatingBar" />
+
+    <TextView
+        android:text="@string/anything_else_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:id="@+id/anythingElsePrompt"
+        android:layout_below="@+id/spaceRatingBar"
+        android:layout_alignLeft="@+id/customerService"
+        android:layout_alignStart="@+id/customerService"
+        android:layout_alignRight="@+id/organized_prompt"
+        android:layout_alignEnd="@+id/organized_prompt" />
+
+    <Button
+        android:text="@string/noThanksButtonPrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:id="@+id/noFeedback"
+        android:layout_below="@+id/miscFeedback"
+        android:layout_alignLeft="@+id/anythingElsePrompt"
+        android:layout_alignStart="@+id/anythingElsePrompt"
+        android:layout_marginTop="26dp" />
+
+    <Button
+        android:text="@string/submitFeedback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="14dp"
+        android:layout_marginEnd="14dp"
+        android:id="@+id/submitFeedback"
+        android:layout_alignBaseline="@+id/noFeedback"
+        android:layout_alignBottom="@+id/noFeedback"
+        android:layout_alignRight="@+id/organized_prompt"
+        android:layout_alignEnd="@+id/organized_prompt" />
+
 </RelativeLayout>

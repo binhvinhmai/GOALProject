@@ -54,8 +54,8 @@ public class GetPointsActivity extends AppCompatActivity {
                 // Commit the edits
                 editor.commit();
 
-                //Reload main activity
-                reloadMain();
+                //Ask for feedback
+                loadFeedback();
                 return;
             }
         }
@@ -84,16 +84,19 @@ public class GetPointsActivity extends AppCompatActivity {
         Button get_points = (Button)findViewById(R.id.gp_points_button);
         get_points.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
                 switch (v.getId()) {
                     case R.id.gp_points_button: {
-                        if (eventEdit.getText().toString() == "") {
-                            break;
+                        if (eventEdit.getText() == null || "".equals(eventEdit.getText().toString())) {
+                            //If none are found
+                            reloadMain();
                         }
                         int eventCode = Integer.parseInt(eventEdit.getText().toString());
                         getPointsFromEvent(eventCode);
                         break;
                     }
                 }
+
             }
         });
     };
@@ -101,6 +104,12 @@ public class GetPointsActivity extends AppCompatActivity {
     public void reloadMain() {
         //Reload main activity
         Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void loadFeedback() {
+        //Function to ask for feedback
+        Intent intent = new Intent(this, SubmitFeedbackActivity.class);
         startActivity(intent);
     }
 }

@@ -5,4 +5,11 @@
     <string name="points_count">0</string>
     <string name="getpointsprompt">Please enter the event code:</string>
     <string name="title_activity_getpoints">Get Points</string>
+    <string name="satisfaction_prompt_label">How satisfied were you with the event?</string>
+    <string name="organized_prompt">How organized and efficient did the event go for you?</string>
+    <string name="customer_service_prompt">Did you feel that the workers and guests provided a comfortable and enjoyable space?</string>
+    <string name="anything_else_prompt">Can you let the event organizers know anything else (i.e. suggestions for improvement?)</string>
+    <string name="noThanksButtonPrompt">No Thanks</string>
+    <string name="submitFeedback">Submit</string>
+    <string name="satisfied_low_text">Not satisfied</string>
 </resources>

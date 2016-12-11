@@ -81,7 +81,7 @@ public class Event {
 
     public String getEventDate() { return eventDateString; }
 
-    public String getEventDayandDate() { return eventDayofWeek + " " + eventDateString; }
+    public String getEventDayandDate() { return eventDayofWeek + " " + eventDateString + " code: " + eventCode; }
 
     public int getEventCode() {
         return Integer.parseInt(eventCode);
@@ -161,25 +161,6 @@ public class Event {
 
         return number;
 
-    }
-
-    public void addToCalendar() {
-
-        //Needs to be updated as this is a mess
-
-        Intent calIntent = new Intent(Intent.ACTION_INSERT);
-        calIntent.setType("vnd.android.cursor.item/event");
-        calIntent.putExtra(CalendarContract.Events.TITLE, getEventName());
-
-        //Parse the string from YYYY-mm-dd format and into the Gregorian Calendar
-        GregorianCalendar calDate = new GregorianCalendar(Integer.parseInt(tempDateString.substring(0,4)), Integer.parseInt(tempDateString.substring(5,7)), Integer.parseInt(tempDateString.substring(8)));
-
-        //KC Parks and Rec does not give the exact start and end times for their events - thus I will make it an al day event
-        calIntent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
-        calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, calDate.getTimeInMillis());
-        calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, calDate.getTimeInMillis());
-
-        //context.startActivity(calIntent);
     }
 
     public String createDate(String longDateString) throws ParseException {
