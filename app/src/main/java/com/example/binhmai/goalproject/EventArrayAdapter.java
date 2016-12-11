@@ -50,8 +50,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         addEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("CALENDAR", item.returnURL());
-
 
                 Intent calIntent = new Intent(Intent.ACTION_INSERT);
                 calIntent.setType("vnd.android.cursor.item/event");

@@ -38,13 +38,15 @@ public class SubmitFeedbackActivity extends Activity{
                 return;
             }
         });
+
         submitFeedBack.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                switch (v.getId()){
+                //Note that this is not going to matter in the long run and was just used for this iteration.
+                //In the real world, all of this data would be compiled and sent to a database
+                //Used solely to ensure this form could even exist in the first place.
 
-                }
                 String emailString = compileData(satisfactionRating.getRating(), organizedRating.getRating(), spaceRating.getRating(), feedBackEdit.getText());
                 Intent emailIntent = new Intent(Intent.ACTION_SEND);
                 emailIntent.setData(Uri.parse("mailto:"));

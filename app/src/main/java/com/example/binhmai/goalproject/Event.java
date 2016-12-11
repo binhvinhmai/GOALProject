@@ -96,12 +96,10 @@ public class Event {
     }
 
     public void createEventCode() {
-        //Take the event month and day
-        //Mix it with the first two letters of the event
-        //Change the first two letters to their respective numbers eventCode
+        //Take the event datetime, which is when the event was originally created, and mix it with some of the data
+        //Note that this would be sent out to the event organizer.
         eventCode = tempDateString.substring(5,7) + string_to_number(eventName.charAt(0)) + string_to_number(eventName.charAt(1)) + tempDateString.substring(8);
     }
-
 
     @Override
     public String toString() {
@@ -164,7 +162,7 @@ public class Event {
     }
 
     public String createDate(String longDateString) throws ParseException {
-        //Takes in a parameter that's like January 1
+        //Takes in a parameter that's like January 1 and returns the current year with the new date in a format like 2017-01-01
         String[] dateArray = longDateString.trim().split(" ");
         Calendar cal = Calendar.getInstance();
         cal.setTime(new SimpleDateFormat("MMM").parse(dateArray[0]));
